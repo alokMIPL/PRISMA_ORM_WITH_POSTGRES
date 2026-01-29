@@ -6,6 +6,7 @@ export const fetchUsers = async (req, res) => {
   return res.json({ status: 200, data: users, message: "User Data Fetched Successfully." })
 }
 
+// create new user
 export const createUser = async(req, res) => {
   const { name, email, password } = req.body;
 
@@ -29,7 +30,7 @@ export const createUser = async(req, res) => {
 
   return res.json({ status: 200, message: "User Created Successfully", data: newUser })
 
-}
+} 
 
 // update user details
 export const updateUser = async (req, res) => {
@@ -48,4 +49,26 @@ export const updateUser = async (req, res) => {
   })
   return res.json({ status: 200, message: "User updated successfully." })
 
+}
+
+// get user by ID
+export const showUser = async (req, res) => {
+  const userId = req.params.id;
+  const user = await prisma.user.findFirst({
+    where: {
+      id: Number(userId)
+    }
+  })
+  return res.json({ status: 200, data: user, message: "User Data By ID Fetched Successfully." })
+}
+
+// Delete user by ID
+export const deleteUser = async (req, res) => {
+  const userId = req.params.id;
+  await prisma.user.delete({
+    where: {
+      id: Number(userId)
+    }
+  })
+  return res.json({ status: 200, message: "User Deleted Successfully." })
 }
