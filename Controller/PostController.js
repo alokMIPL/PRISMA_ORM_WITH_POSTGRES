@@ -1,4 +1,4 @@
-import prisma from "../DB/db.config";
+import prisma from "../DB/db.config.js";
 
 // get all posts
 export const fetchPosts = async (req, res) => {
