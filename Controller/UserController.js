@@ -2,7 +2,7 @@ import prisma from "../DB/db.config.js";
 
 // get all users
 export const fetchUsers = async (req, res) => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({});
   return res.json({ status: 200, data: users, message: "User Data Fetched Successfully." })
 }
 
