@@ -3,8 +3,39 @@ import prisma from "../DB/db.config.js";
 // get all users
 export const fetchUsers = async (req, res) => {
   const users = await prisma.user.findMany({
-    include: {
-      post: true,
+    // we add this later after post model creation
+    // this include post: true give all posts related to user
+    // ****
+    // include: {
+    // post: true
+    // },
+
+    // for only specific fields in post field we do
+    // ****
+    // include: {
+    //   post: {
+    //     select: {
+    //       title: true,
+    //       comment_count: true,
+    //     },
+    //   },
+    // },
+
+    // suppose user have post, comment and other models relation
+    // and we want only post and comment relation data count
+    // means how much post and comment user have
+    // then we do as below
+    // ****
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      _count: {
+        select: {
+          post: true,
+          comment: true,
+        },
+      },
     },
   });
   return res.json({
