@@ -2,35 +2,49 @@ import prisma from "../DB/db.config.js";
 
 // get all users
 export const fetchUsers = async (req, res) => {
-  const users = await prisma.user.findMany({});
-  return res.json({ status: 200, data: users, message: "User Data Fetched Successfully." })
-}
+  const users = await prisma.user.findMany({
+    include: {
+      post: true,
+    },
+  });
+  return res.json({
+    status: 200,
+    data: users,
+    message: "User Data Fetched Successfully.",
+  });
+};
 
 // create new user
-export const createUser = async(req, res) => {
+export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   const findUser = await prisma.user.findUnique({
     where: {
-      email: email
-    }
-  })
+      email: email,
+    },
+  });
 
-  if(findUser){
-    return res.json({ status: 400, message:"Email Already Taken. Please use another email." });
+  if (findUser) {
+    return res.json({
+      status: 400,
+      message: "Email Already Taken. Please use another email.",
+    });
   }
 
   const newUser = await prisma.user.create({
     data: {
-      name: name, 
+      name: name,
       email: email,
-      password: password
-    }
-  })
+      password: password,
+    },
+  });
 
-  return res.json({ status: 200, message: "User Created Successfully", data: newUser })
-
-} 
+  return res.json({
+    status: 200,
+    message: "User Created Successfully",
+    data: newUser,
+  });
+};
 
 // update user details
 export const updateUser = async (req, res) => {
@@ -39,36 +53,39 @@ export const updateUser = async (req, res) => {
 
   await prisma.user.update({
     where: {
-      id:Number(userId)
+      id: Number(userId),
     },
     data: {
       name,
       email,
-      password
-    }
-  })
-  return res.json({ status: 200, message: "User updated successfully." })
-
-}
+      password,
+    },
+  });
+  return res.json({ status: 200, message: "User updated successfully." });
+};
 
 // get user by ID
 export const showUser = async (req, res) => {
   const userId = req.params.id;
   const user = await prisma.user.findFirst({
     where: {
-      id: Number(userId)
-    }
-  })
-  return res.json({ status: 200, data: user, message: "User Data By ID Fetched Successfully." })
-}
+      id: Number(userId),
+    },
+  });
+  return res.json({
+    status: 200,
+    data: user,
+    message: "User Data By ID Fetched Successfully.",
+  });
+};
 
 // Delete user by ID
 export const deleteUser = async (req, res) => {
   const userId = req.params.id;
   await prisma.user.delete({
     where: {
-      id: Number(userId)
-    }
-  })
-  return res.json({ status: 200, message: "User Deleted Successfully." })
-}
+      id: Number(userId),
+    },
+  });
+  return res.json({ status: 200, message: "User Deleted Successfully." });
+};
