@@ -41,3 +41,31 @@ export const showPost = async (req, res) => {
     message: "Post Data By ID Fetched Successfully.",
   });
 };
+
+// update post details
+export const updatePost = async (req, res) => {
+  const postId = req.params.id;
+  const { title, description } = req.body;
+
+  await prisma.post.update({
+    where: {
+      id: Number(postId),
+    },
+    data: {
+      title,
+      description,
+    },
+  });
+  return res.json({ status: 200, message: "Post updated successfully." });
+};
+
+// Delete post by ID
+export const deletePost = async (req, res) => {
+  const postId = req.params.id;
+  await prisma.post.delete({
+    where: {
+      id: Number(postId),
+    },
+  });
+  return res.json({ status: 200, message: "Post Deleted Successfully." });
+};
