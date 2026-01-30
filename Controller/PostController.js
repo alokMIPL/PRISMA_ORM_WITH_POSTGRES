@@ -47,9 +47,19 @@ export const fetchPosts = async (req, res) => {
       comment_count: {
         gt: -1,
       },
+      // we can use startsWith, endsWith or equal to filter.
+      // ****
       // title:{
       //   startsWith: "A"
-      // }
+      // },
+      // ****
+      // description: {
+      //   endsWith: "Vercel.",
+      // },
+      // ****
+      // description: {
+      //   equals: "Welcome to",
+      // },
       // ****
       // as such title we can filter more data.
       // ****
@@ -61,6 +71,23 @@ export const fetchPosts = async (req, res) => {
       //     },
       //   },
       // },
+
+      // filter with OR, AND and NOT
+      // here we use filter with OR
+      // means if any conditions become true it return value.
+      // So, here it return or gives post title starts with "Next" and also return the post descriptions ends with "vercel." 
+      OR: [
+        {
+          title: {
+            startsWith: "Next",
+          },
+        },
+        {
+          description: {
+            endsWith: "vercel.",
+          },
+        },
+      ],
     },
   });
   return res.json({

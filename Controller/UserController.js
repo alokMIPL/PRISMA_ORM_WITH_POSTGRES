@@ -76,6 +76,7 @@ export const fetchUsers = async (req, res) => {
 
       // here we filter on bases of post and inside post we find on bases of title and next time on bases of description.
       post: {
+        // we can use startsWith, endsWith or equal to filter.
         // where: {
         //   title: {
         //     startsWith: "A",
