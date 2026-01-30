@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { createComment, deleteComment, fetchComments, showComment, updateComment } from "../Controller/CommentController.js";
+import { createComment, deleteComment, fetchComments, searchComment, showComment, updateComment } from "../Controller/CommentController.js";
 
 
 const router = Router();
 
 router.get("/", fetchComments);
+router.get("/search", searchComment);
 router.get("/:id", showComment);
 router.post("/", createComment);
 router.put("/:id", updateComment);

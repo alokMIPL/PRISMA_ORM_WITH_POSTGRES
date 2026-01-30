@@ -135,3 +135,16 @@ export const deleteComment = async (req, res) => {
   });
   return res.json({ status: 200, message: "Comment Deleted Successfully." });
 };
+
+// Search functionality for comments
+export const searchComment = async (req, res) => {
+  const query = req.query.q;
+  const comments = await prisma.comment.findMany({
+    where: {
+      comment: {
+        search: query,
+      },
+    },
+  });
+  return res.json({ status: 200, data: comments, message:"Comment search succesfully." })
+};
