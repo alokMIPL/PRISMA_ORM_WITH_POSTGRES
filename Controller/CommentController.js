@@ -2,7 +2,24 @@ import prisma from "../DB/db.config.js";
 
 // get all comments
 export const fetchComments = async (req, res) => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  if (page <= 0) {
+    page = 1;
+  }
+
+  if(limit <=0 || limit >= 100){
+    limit = 10;
+  }
+
+  const skip = (page - 1 ) * limit
+
   const comments = await prisma.comment.findMany({
+
+    // Now pagination in comments section
+    skip: skip,
+    take: limit,
+
     // here we use nested relationship.
     // same as user controller post relation comment fetching
     // this include user and post give all posts and user related to this particular comment
@@ -49,10 +66,20 @@ export const fetchComments = async (req, res) => {
       },
     },
   });
+
+  // To get total comments.
+  const totalComments = await prisma.comment.count();
+  const totalPages = Math.ceil(totalComments / limit);
+
   return res.json({
     status: 200,
     data: comments,
     message: "Comments Data Fetched Successfully.",
+    meta: {
+      totalPages,
+      currentPages: page,
+      limit: limit
+    }
   });
 };
 
@@ -146,5 +173,9 @@ export const searchComment = async (req, res) => {
       },
     },
   });
-  return res.json({ status: 200, data: comments, message:"Comment search succesfully." })
+  return res.json({
+    status: 200,
+    data: comments,
+    message: "Comment search succesfully.",
+  });
 };
