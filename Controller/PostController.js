@@ -9,9 +9,16 @@ export const fetchPosts = async (req, res) => {
   }
 
   if (limit <= 0 || limit > 100) {
+    limit = 10;
   }
 
+  const skip = (page - 1) * limit;
+
   const posts = await prisma.post.findMany({
+    // here we use pagination
+    skip: skip,
+    take: limit,
+
     // here we use nested relationship.
 
     // same as user controller post relation comment fetching
@@ -173,10 +180,20 @@ export const fetchPosts = async (req, res) => {
       // },
     },
   });
+
+  // to get total post count
+  const totalPosts = await prisma.post.count();
+  const totalPages = Math.ceil(totalPosts / limit);
+
   return res.json({
     status: 200,
     data: posts,
     message: "Posts Data Fetched Successfully.",
+    meta: {
+      totalPages,
+      currentPage: page,
+      limit: limit,
+    },
   });
 };
 
