@@ -67,6 +67,12 @@ export const fetchUsers = async (req, res) => {
       id: true,
       name: true,
       email: true,
+      _count: {
+        select: {
+          post: true,
+          comment: true,
+        },
+      },
       post: {
         where: {},
         orderBy: [
