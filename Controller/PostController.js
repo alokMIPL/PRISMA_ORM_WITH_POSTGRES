@@ -40,8 +40,28 @@ export const fetchPosts = async (req, res) => {
     },
     orderBy: {
       // id: "desc"
-      id: "asc"
-    }
+      id: "asc",
+    },
+    // here we use filter the post by comment_count > -1 and post title started with "A"
+    where: {
+      comment_count: {
+        gt: -1,
+      },
+      // title:{
+      //   startsWith: "A"
+      // }
+      // ****
+      // as such title we can filter more data.
+      // ****
+      // in this post fetch we can also filter the data of comments
+      // comment: {
+      //   some: {
+      //     comment: {
+      //       startsWith: "Nice",
+      //     },
+      //   },
+      // },
+    },
   });
   return res.json({
     status: 200,

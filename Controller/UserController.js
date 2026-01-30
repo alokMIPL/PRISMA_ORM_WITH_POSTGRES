@@ -73,12 +73,25 @@ export const fetchUsers = async (req, res) => {
           comment: true,
         },
       },
+
+      // here we filter on bases of post and inside post we find on bases of title and next time on bases of description.
       post: {
-        where: {},
+        // where: {
+        //   title: {
+        //     startsWith: "A",
+        //   },
+        // },
+        // ****
+        // where: {
+        //   description: {
+        //     startsWith: "Note",
+        //   },
+        // },
         orderBy: [
           // {
           //   created_at: "asc",
           // },
+          // ****
           // {
           //   title: "asc",
           // },
