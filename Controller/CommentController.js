@@ -2,7 +2,57 @@ import prisma from "../DB/db.config.js";
 
 // get all comments
 export const fetchComments = async (req, res) => {
-  const comments = await prisma.comment.findMany({});
+  const comments = await prisma.comment.findMany({
+
+    // here we use nested relationship.
+    // same as user controller post relation comment fetching
+    // this include user and post give all posts and user related to this particular comment
+    // ****
+    // include: {
+    //   user: true,
+    //   post: true,
+    // },
+
+    // or we can do that
+    // this give data of comment and inside which post and inside which user but give only user details not post details
+    // when we use select
+    // ****
+    // include: {
+    //   post: {
+    //     select: {
+    //       user: true,
+    //     }
+    //   }
+    // },
+
+    // or we can do that
+    // this give data of comment and inside which post and inside which user but it give user details and post details also.
+    // when we use include
+    // ****
+    // include: {
+    //   post: {
+    //     include: {
+    //       user: true,
+    //     }
+    //   }
+    // },
+
+    // or we can do that
+    // this give data of comment and inside which post and inside which user but it give user details and post details also.
+    // when we use include
+    // ****
+    include: {
+      user: true,
+      post: {
+        include: {
+          user: true,
+        }
+      }
+    }
+
+
+
+  });
   return res.json({
     status: 200,
     data: comments,
@@ -72,7 +122,7 @@ export const updateComment = async (req, res) => {
 // Delete post by ID
 export const deleteComment = async (req, res) => {
   const commentId = req.params.id;
-  
+
   // Decrease the comment counter
   await prisma.post.update({
     where: { id: Number(post_id) },
