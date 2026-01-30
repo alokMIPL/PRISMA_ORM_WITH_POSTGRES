@@ -75,19 +75,39 @@ export const fetchPosts = async (req, res) => {
       // filter with OR, AND and NOT
       // here we use filter with OR
       // means if any conditions become true it return value.
-      // So, here it return or gives post title starts with "Next" and also return the post descriptions ends with "vercel." 
-      OR: [
+      // So, here it return or gives post title starts with "Next" and also return the post descriptions ends with "vercel."
+      // ****
+      // OR: [
+      //   {
+      //     title: {
+      //       startsWith: "Next",
+      //     },
+      //   },
+      //   {
+      //     description: {
+      //       endsWith: "download it.",
+      //     },
+      //   },
+      // ],
+
+      // here we use filter with AND
+      // means if any conditions become false it return empty[] array.
+      // So, here it return or gives post title starts with "Find" and also return the post descriptions ends with "download it."
+      // ****
+      AND: [
         {
           title: {
-            startsWith: "Next",
+            startsWith: "Find",
           },
         },
         {
           description: {
-            endsWith: "vercel.",
+            endsWith: "download it.",
           },
         },
       ],
+
+      
     },
   });
   return res.json({
