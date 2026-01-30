@@ -39,29 +39,57 @@ export const fetchUsers = async (req, res) => {
     // },
 
     // suppose user have user post, comment and other models relation
-    // and we want all post and comment associated with that post and with that user then this relation comes in role. 
+    // and we want all post and comment associated with that post and with that user then this relation comes in role.
     // means how much post and comment user have with nested form
     // means it show user1 have 2 posts and inside these two post it also show the comments details.
     // then we do as below
     // ****
+    // select: {
+    //   id: true,
+    //   name: true,
+    //   email: true,
+    //   _count: {
+    //     select: {
+    //       post: true,
+    //       comment: true,
+    //     },
+    //   },
+    //   // here we select post and inside post it include comment so, it shows in nested form.
+    //   post: {
+    //     include: {
+    //       comment: true
+    //     }
+    //   }
+    // },
+
+    // here we use filter to sort data according to created_at post title post comment_count etc.
     select: {
       id: true,
       name: true,
       email: true,
-      _count: {
+      post: {
+        where: {},
+        orderBy: [
+          // {
+          //   created_at: "asc",
+          // },
+          // {
+          //   title: "asc",
+          // },
+          {
+            comment_count: "desc",
+          },
+        ],
         select: {
-          post: true,
+          id: true,
+          title: true,
+          description: true,
+          comment_count: true,
+          created_at: true,
           comment: true,
         },
       },
-      // here we select post and inside post it include comment so, it shows in nested form. 
-      post: {
-        include: {
-          comment: true
-        }
-      }
     },
-
   });
   return res.json({
     status: 200,

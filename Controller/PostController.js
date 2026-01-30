@@ -3,7 +3,6 @@ import prisma from "../DB/db.config.js";
 // get all posts
 export const fetchPosts = async (req, res) => {
   const posts = await prisma.post.findMany({
-
     // here we use nested relationship.
 
     // same as user controller post relation comment fetching
@@ -26,22 +25,19 @@ export const fetchPosts = async (req, res) => {
 
     // for only specific fields in comment field we do
     // here we fetch user name data only
+    // we use include for nesting or going deep-down to it.
     // ****
     include: {
       comment: {
         include: {
           user: {
-            select:{
+            select: {
               name: true,
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     },
-
-    
-
-
   });
   return res.json({
     status: 200,
