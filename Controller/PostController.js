@@ -72,7 +72,6 @@ export const fetchPosts = async (req, res) => {
       //   },
       // },
 
-
       // =====================================
       // Filter with OR (Logical OR Operator)
       // =====================================
@@ -230,4 +229,17 @@ export const deletePost = async (req, res) => {
     },
   });
   return res.json({ status: 200, message: "Post Deleted Successfully." });
+};
+
+// To search the post
+export const searchPost = async (req, res) => {
+  const query = req.query.q;
+  const posts = await prisma.post.findMany({
+    where: {
+      description: {
+        search: query,
+      },
+    },
+  });
+  return res.json({ status: 200, data: posts, message: "Search succesful." });
 };
