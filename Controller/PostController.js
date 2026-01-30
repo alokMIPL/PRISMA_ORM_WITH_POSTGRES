@@ -2,6 +2,15 @@ import prisma from "../DB/db.config.js";
 
 // get all posts
 export const fetchPosts = async (req, res) => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  if (page <= 0) {
+    page = 1;
+  }
+
+  if (limit <= 0 || limit > 100) {
+  }
+
   const posts = await prisma.post.findMany({
     // here we use nested relationship.
 
@@ -232,12 +241,18 @@ export const deletePost = async (req, res) => {
 };
 
 // To search the post
+// this serach functionality give search results of post "title" and post "description" only.
+// it not give comments test search.
+// for comment text search we need to create the search api on comments page controller.
 export const searchPost = async (req, res) => {
   const query = req.query.q;
   const posts = await prisma.post.findMany({
     where: {
       description: {
+        // we can use both search and contains
+        // for big data or long-text search we use search and avoid contains.
         search: query,
+        // contains: query
       },
     },
   });
